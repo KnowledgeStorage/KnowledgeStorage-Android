@@ -1,15 +1,64 @@
 package com.kn.knowledgestorage;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Document extends ApplicationFile {
+public class Document extends ApplicationFile implements Parcelable, Serializable {
     protected Vector<String> mContent = new Vector<>();
+
+    /**
+     * Parcelable object dedicated to creation of easy-to-process objects out of given
+     */
+    public static final Parcelable.Creator<Document> CREATOR = new Parcelable.Creator<Document>() {
+        public Document createFromParcel(Parcel in) {
+            return new Document(in);
+        }
+
+        public Document[] newArray(int size) {
+            return new Document[size];
+        }
+    };
 
     /**
      * Constructor
      */
     Document(){
 
+    }
+
+    /**
+     * Constructor
+     * @param parcel parcel object to restore data from
+     */
+    public Document(Parcel parcel) {
+        readFromParcel(parcel);
+    }
+
+    @Override
+    protected void readFromParcel(Parcel parcel) {
+        super.readFromParcel(parcel);
+
+        mContent = (Vector<String>) parcel.readSerializable();
+    }
+
+    /**
+     *
+     * @param parcel
+     * @param flags
+     */
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        super.readFromParcel(parcel);
+
+        parcel.writeSerializable(mContent);
+    }
+
+    @Override
+    public int describeContents() {
+        return super.describeContents();
     }
 
     /**
